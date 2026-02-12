@@ -1,4 +1,4 @@
-package org.example;
+package org.example.app;
 import java.sql.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -14,6 +14,12 @@ public class Main {
             // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
             System.out.println("i = " + i);
         }
+
+        testConnection();
+        getCourses();
+
+    }
+    private static void testConnection(){
         String url = "jdbc:postgresql://192.168.179.129:5432/appdb";
         String user = "appuser";
         String pass = "Gefsbizd19!"; // лучше потом вынести в переменные окружения
@@ -29,9 +35,8 @@ public class Main {
             System.out.println("DB error: " + e.getMessage());
             e.printStackTrace();
         }
-        getCourses();
-
     }
+
     private static void getCourses() {
         String url = "jdbc:postgresql://192.168.179.129:5432/appdb";
         String user = "appuser";
