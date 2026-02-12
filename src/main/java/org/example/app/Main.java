@@ -1,4 +1,6 @@
 package org.example.app;
+import org.example.cli.ConsoleMenu;
+
 import java.sql.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -15,8 +17,16 @@ public class Main {
             System.out.println("i = " + i);
         }
 
-        testConnection();
-        getCourses();
+        //testConnection();
+        //getCourses();
+        System.out.println("========================================");
+        System.out.println("Postgres Database Demo Application");
+        System.out.println("========================================");
+
+        //To DO :: check here, whether the database connection is ok.
+
+        ConsoleMenu menu = new ConsoleMenu();
+        menu.mainLoop();
 
     }
     private static void testConnection(){

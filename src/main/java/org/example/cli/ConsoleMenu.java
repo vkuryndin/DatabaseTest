@@ -8,25 +8,102 @@ public class ConsoleMenu {
     public void mainLoop() {
         while (true) {
             printMainMenu();
-            String choice = InputUtils.readTrimmed("Select ");
+            String choice = InputUtils.readTrimmed("Please choose your main menu item: > ");
 
             if (choice == null) {
                 System.out.println("Input closed. Exiting.");
                 return;
             }
             switch (choice) {
-                case "1" ->
-                    System.out.println("You chose option 1");
-
-                case "2", "q", "quit", "exit" -> {
+                case "1" -> printMainActionsMenu();
+                case "2" -> printStatisticsMenu();
+                case "3" -> printSettingsMenu();
+                case "4" -> printHelpMenu();
+                case "5", "q", "quit", "exit" -> {
                     return;
                 }
+                default -> System.out.println("Unknown option. Please try again.");
             }
         }
     }
+    /** Prints the top-level menu options. */
     private void printMainMenu() {
-        //TO DO: finish the menu
+        System.out.println();
+        System.out.println("Main Menu");
+        System.out.println("1. Main Actions");
+        System.out.println("2. Statistics");
+        System.out.println("3. Settings");
+        System.out.println("4. Help / Examples");
+        System.out.println("5. Exit"); //
+
 
     }
+
+    private void printMainActionsMenu(){
+        // Actions menu:
+        //1. Add student
+        //2. Add course
+        //3. Add student to the course
+        //4. Remove student from the course
+        //5. Remove the course
+        //6. Delete the student
+        //7. Return to the main menu
+        System.out.println();
+        System.out.println("Main Actions Menu");
+        System.out.println("1. Add student");
+        System.out.println("2. Add course");
+        System.out.println("3. Add student to the course");
+        System.out.println("4. Remove student from the course");
+        System.out.println("5. Remove the course");
+        System.out.println("6. Delete the student");
+        System.out.println("7. Return to the main menu"); //
+
+    }
+
+    private void printStatisticsMenu(){
+        //Statistics menu:
+        //1. Show all students
+        //2. Show all courses
+        //3. Show all students in the course
+        //4. Return to the main menu
+
+    }
+
+    private void printSettingsMenu(){
+
+    }
+
+    private void printHelpMenu(){
+    }
+
+    //Menu:
+    //Main menu
+    //1. Main Actions
+    //2. Statistics
+    //3. Settings
+    //4. Help
+    //5. Exit
+
+    // Actions menu:
+    //1. Add student
+    //2. Add course
+    //3. Add student to the course
+    //4. Remove student from the course
+    //5. Remove the course
+    //6. Delete the student
+    //7. Return to main menu
+
+    //Statistics menu:
+    //1. Show all students
+    //2. Show all courses
+    //3. Show all students in the course
+    //4. Return to main menu
+
+    //Setting menu:
+    //1. Check connection to database
+    //2. Return to main menu
+
+    //Help menu:
+    //Some help info
 }
 

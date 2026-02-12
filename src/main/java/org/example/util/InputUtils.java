@@ -27,7 +27,7 @@ import java.util.Scanner;
  *       across platforms.
  * </ul>
  */
-public final class InputUtils {
+public final class InputUtils implements AutoCloseable {
 
     /** Shared UTF-8 {@link Scanner} over {@code System.in}. */
     private static final Scanner SC = new Scanner(System.in, StandardCharsets.UTF_8);
@@ -57,5 +57,69 @@ public final class InputUtils {
         } catch (IllegalStateException | NoSuchElementException e) {
             return null; // input stream closed
         }
+    }
+    /**
+     * Reads one line from console after printing prompt.
+     */
+    public String readLine(String prompt) {
+        System.out.print(prompt);
+        return SC.nextLine();
+    }
+
+    /**
+     * Reads a non-empty string (keeps asking until user enters something).
+     */
+    public String readNonEmpty(String prompt) {
+        while (true) {
+            String s = readLine(prompt).trim();
+            if (!s.isEmpty()) return s;
+            System.out.println("Value cannot be empty. Try again.");
+        }
+    }
+
+    /**
+     * Reads an integer. Repeats until valid number is entered.
+     */
+    public int readInt(String prompt) {
+        while (true) {
+            String s = readLine(prompt).trim();
+            try {
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid integer. Try again.");
+            }
+        }
+    }
+
+    /**
+     * Very simple email validation for learning purposes.
+     * (Not RFC-perfect, just basic sanity checks.)
+     */
+    public String readEmail(String prompt) {
+        while (true) {
+            String email = readNonEmpty(prompt);
+            if (email.contains("@") && email.indexOf('@') > 0 && email.indexOf('@') < email.length() - 1) {
+                return email;
+            }
+            System.out.println("Invalid email format. Try again.");
+        }
+    }
+
+    /**
+     * Reads yes/no answer. Accepts: y/yes, n/no (case-insensitive).
+     */
+    public boolean readYesNo(String prompt) {
+        while (true) {
+            String s = readNonEmpty(prompt + " (y/n): ").toLowerCase();
+            if (s.equals("y") || s.equals("yes")) return true;
+            if (s.equals("n") || s.equals("no")) return false;
+            System.out.println("Please answer y/n.");
+        }
+    }
+
+
+    @Override
+    public void close() throws Exception {
+        SC.close();
     }
 }
