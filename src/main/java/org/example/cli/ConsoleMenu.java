@@ -96,10 +96,14 @@ public class ConsoleMenu {
     }
 
     private void printSettingsMenu(){
-
+        //Setting menu:
+        //1. Check connection to database
+        //2. Return to main menu
     }
 
     private void printHelpMenu(){
+        //Help menu:
+        //Some help info
     }
 
     //Menu:

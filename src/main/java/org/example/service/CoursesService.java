@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.example.storage.SQLQueries;
 
 public class CoursesService {
 
@@ -14,15 +15,8 @@ public class CoursesService {
     }
 
     public static boolean courseExistsByName(String email) throws SQLException {
-        String sql = """
-        SELECT 1
-        FROM courses
-        WHERE course_name = ?::citext
-        LIMIT 1
-    """;
-
-        try (Connection conn = ConnectionFactory.getConnection("appdb");
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+          try (Connection conn = ConnectionFactory.getConnection("appdb");
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.SQLQueryGetCourseByName)) {
 
             ps.setString(1, email);
 
@@ -54,6 +48,61 @@ public class CoursesService {
             throw new RuntimeException(e);
         }
     }
+    public static int findCoursebyName (String email) {
+        try (Connection conn = ConnectionFactory.getConnection("appdb");
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.SQLQueryGetCourseByName)) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+                return -1; // course not found
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check course by name", e);
+        }
+    }
+
+    //overloaded method for findCourseByName requiring a connection
+    public static int findCoursebyName (Connection connection, String email) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.SQLQueryGetCourseByName);
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+                return -1; // course not found
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check course by name", e);
+        }
+    }
+
+    public static boolean addToTheCourse (Connection connection, int studentId, int courseId) {
+        String sql = """
+                INSERT INTO student_courses (student_id, course_id)
+                        VALUES (?, ?)
+                        ON CONFLICT DO
+                NOTHING;
+        """;
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to add student to course", e);
+        }
+    }
+
 }
 
 

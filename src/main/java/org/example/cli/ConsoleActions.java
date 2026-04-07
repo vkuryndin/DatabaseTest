@@ -1,10 +1,12 @@
 package org.example.cli;
 
 import org.example.service.StudentService;
+import org.example.util.ConnectionFactory;
 import org.example.util.InputUtils;
 import org.example.service.StudentService;
 import org.example.service.CoursesService;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConsoleActions {
@@ -46,7 +48,7 @@ public class ConsoleActions {
             }
             if (!CoursesService.courseExistsByName(courseName)) {
                 int id = CoursesService.insertCourse(courseName);
-                if (id !=0) {
+                if (id !=-1) {
                     System.out.println("Course added successfully with ID: " + id);
                 }
                 return;
@@ -55,8 +57,32 @@ public class ConsoleActions {
             }
         }
     }
-    public static void addStudentToCourse() {
+    public static void addStudentToCourse() throws SQLException {
         System.out.println("Add student to the course");
+        String studentEmail = InputUtils.readTrimmed("Enter student email: ");
+        try (Connection connection = ConnectionFactory.getConnection("appdb")) {
+            int studentID = StudentService.findStudentbyEmail(connection, studentEmail);
+            if (studentID == -1) {
+                System.out.println("Student with e-mail " + studentEmail + " not found");
+                return;
+            }
+            System.out.println("Student with e-mail " + studentEmail + " found with ID:  " + studentID);
+            String courseName = InputUtils.readTrimmed("Enter course name: ");
+            int courseID = CoursesService.findCoursebyName(connection, courseName);
+            if (courseID == -1) {
+                System.out.println("Course with name " + courseName + " not found");
+                return;
+            }
+            System.out.println("Course " + courseName + " found with ID: " + courseID);
+            //Add to the course here...
+            if (CoursesService.addToTheCourse(connection, studentID, courseID)) {
+                System.out.println("Student added to the course successfully");
+            } else {
+                System.out.println("Failed to add student to the course");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
     }
     public static void removeStudentFromCourse(){
         System.out.println("Remove student from the course");

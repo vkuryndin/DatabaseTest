@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.example.storage.SQLQueries;
 
 public final class StudentService {
 
@@ -14,15 +15,9 @@ public final class StudentService {
     }
 
     public static boolean studentExistsByEmail(String email) throws SQLException {
-        String sql = """
-        SELECT 1
-        FROM students
-        WHERE email = ?::citext
-        LIMIT 1
-    """;
 
         try (Connection conn = ConnectionFactory.getConnection("appdb");
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.SQLQueryGetStudentByEmail)) {
 
             ps.setString(1, email);
 
@@ -55,4 +50,39 @@ public final class StudentService {
             throw new RuntimeException(e);
         }
     }
+
+    public static int findStudentbyEmail(String email) {
+            try (Connection conn = ConnectionFactory.getConnection("appdb");
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.SQLQueryGetStudentByEmail)) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+                return -1; // student not found
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check student by email", e);
+        }
+    }
+
+    public static int findStudentbyEmail(Connection connection, String email) {
+        try {
+        PreparedStatement ps = connection.prepareStatement(SQLQueries.SQLQueryGetStudentByEmail);
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+                return -1; // student not found
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check student by email", e);
+        }
+    }
+
 }
