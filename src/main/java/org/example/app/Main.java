@@ -1,12 +1,13 @@
 package org.example.app;
 import org.example.cli.ConsoleMenu;
+import org.example.util.Db;
 
 import java.sql.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
         System.out.printf("Hello and welcome!");
@@ -25,10 +26,13 @@ public class Main {
 
         //To DO :: check here, whether the database connection is ok.
 
+        Db.checkDBConnection("appdb");
         ConsoleMenu menu = new ConsoleMenu();
         menu.mainLoop();
 
     }
+
+    //Think about it later
     private static void testConnection(){
         String url = "jdbc:postgresql://192.168.179.129:5432/appdb";
         String user = "appuser";

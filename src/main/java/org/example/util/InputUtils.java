@@ -61,7 +61,7 @@ public final class InputUtils implements AutoCloseable {
     /**
      * Reads one line from console after printing prompt.
      */
-    public String readLine(String prompt) {
+    public static String readLine(String prompt) {
         System.out.print(prompt);
         return SC.nextLine();
     }
@@ -69,7 +69,7 @@ public final class InputUtils implements AutoCloseable {
     /**
      * Reads a non-empty string (keeps asking until user enters something).
      */
-    public String readNonEmpty(String prompt) {
+    public static String readNonEmpty(String prompt) {
         while (true) {
             String s = readLine(prompt).trim();
             if (!s.isEmpty()) return s;
@@ -80,7 +80,7 @@ public final class InputUtils implements AutoCloseable {
     /**
      * Reads an integer. Repeats until valid number is entered.
      */
-    public int readInt(String prompt) {
+    public static int readInt(String prompt) {
         while (true) {
             String s = readLine(prompt).trim();
             try {
@@ -95,7 +95,7 @@ public final class InputUtils implements AutoCloseable {
      * Very simple email validation for learning purposes.
      * (Not RFC-perfect, just basic sanity checks.)
      */
-    public String readEmail(String prompt) {
+    public static String readEmail(String prompt) {
         while (true) {
             String email = readNonEmpty(prompt);
             if (email.contains("@") && email.indexOf('@') > 0 && email.indexOf('@') < email.length() - 1) {
@@ -108,7 +108,7 @@ public final class InputUtils implements AutoCloseable {
     /**
      * Reads yes/no answer. Accepts: y/yes, n/no (case-insensitive).
      */
-    public boolean readYesNo(String prompt) {
+    public static boolean readYesNo(String prompt) {
         while (true) {
             String s = readNonEmpty(prompt + " (y/n): ").toLowerCase();
             if (s.equals("y") || s.equals("yes")) return true;

@@ -1,10 +1,13 @@
 package org.example.util;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 /**
  * Db is a small helper around DriverManager + Connection lifecycle.
@@ -13,8 +16,53 @@ import java.sql.Statement;
  * - Services call Db.inTransaction(...) for multi-step operations that must be atomic
   * We pass Connection into DAO methods so the Service can control transactions.
  */
-public class Db {
+public final class Db {
 
+    //new implementation
+    private static final Properties PROPERTIES = new Properties();
+
+    static {
+        try (InputStream input = Db.class.getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                throw new RuntimeException("db.properties not found");
+            }
+            PROPERTIES.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load db.properties", e);
+        }
+    }
+
+
+    private Db() {
+    }
+
+    public static String getUrl(String dbKey) {
+        return PROPERTIES.getProperty("db." + dbKey + ".url");
+    }
+
+    public static String getUsername(String dbKey) {
+        return PROPERTIES.getProperty("db." + dbKey + ".username");
+    }
+
+    public static String getPassword(String dbKey) {
+        return PROPERTIES.getProperty("db." + dbKey + ".password");
+    }
+
+    public static String getDriver(String dbKey) {
+        return PROPERTIES.getProperty("db." + dbKey + ".driver");
+    }
+
+
+
+public static void checkDBConnection (String dbKey) throws SQLException {
+        try (Connection connection = ConnectionFactory.getConnection(dbKey)) {
+            if (connection == null) {
+                throw new SQLException("Failed to establish connection for DB key: " + dbKey);
+            }
+            else
+                System.out.println("Connection established successfully for: " + dbKey);
+        }
+}
     /**
      * Opens a new connection using DriverManager.
      * Caller is responsible for closing it (or use inConnection/inTransaction).

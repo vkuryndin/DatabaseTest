@@ -1,5 +1,7 @@
 package org.example.util;
 
+//I think this is not needed now
+
 public final class AppConfig {
     private AppConfig() {
         // Utility class: prevent instantiation

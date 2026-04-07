@@ -2,10 +2,12 @@ package org.example.cli;
 
 import org.example.util.InputUtils;
 
+import java.sql.SQLException;
+
 public class ConsoleMenu {
 
 
-    public void mainLoop() {
+    public void mainLoop() throws SQLException {
         while (true) {
             printMainMenu();
             String choice = InputUtils.readTrimmed("Please choose your main menu item: > ");
@@ -15,10 +17,10 @@ public class ConsoleMenu {
                 return;
             }
             switch (choice) {
-                case "1" -> printMainActionsMenu();
-                case "2" -> printStatisticsMenu();
-                case "3" -> printSettingsMenu();
-                case "4" -> printHelpMenu();
+                case "1" -> mainActionsLoop();
+                case "2" -> printStatisticsMenu();  //TO DO
+                case "3" -> printSettingsMenu(); //TO DO
+                case "4" -> printHelpMenu(); //TO DO
                 case "5", "q", "quit", "exit" -> {
                     return;
                 }
@@ -26,6 +28,30 @@ public class ConsoleMenu {
             }
         }
     }
+    public void mainActionsLoop() throws SQLException {
+        while (true) {
+            printMainActionsMenu();
+            String choice = InputUtils.readTrimmed("Please choose your main menu item: > ");
+
+            if (choice == null) {
+                System.out.println("Input closed. Exiting.");
+                return;
+            }
+            switch (choice) {
+                case "1" -> ConsoleActions.addStudent();
+                case "2" -> ConsoleActions.addCourse();
+                case "3" -> ConsoleActions.addStudentToCourse();
+                case "4" -> ConsoleActions.removeStudentFromCourse();
+                case "5" -> ConsoleActions.removeCourse();
+                case "6" -> ConsoleActions.deleteStudent();
+                case "7", "q", "quit", "exit" -> {
+                    return;
+                }
+                default -> System.out.println("Unknown option. Please try again.");
+            }
+        }
+    }
+
     /** Prints the top-level menu options. */
     private void printMainMenu() {
         System.out.println();
@@ -38,7 +64,7 @@ public class ConsoleMenu {
 
 
     }
-
+    /** Prints the Main actions menu options. */
     private void printMainActionsMenu(){
         // Actions menu:
         //1. Add student
