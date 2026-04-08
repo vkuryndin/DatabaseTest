@@ -18,7 +18,7 @@ public class ConsoleMenu {
             }
             switch (choice) {
                 case "1" -> mainActionsLoop();
-                case "2" -> printStatisticsMenu();  //TO DO
+                case "2" -> statisticsLoop() ;  //TO DO
                 case "3" -> printSettingsMenu(); //TO DO
                 case "4" -> printHelpMenu(); //TO DO
                 case "5", "q", "quit", "exit" -> {
@@ -50,6 +50,27 @@ public class ConsoleMenu {
                 default -> System.out.println("Unknown option. Please try again.");
             }
         }
+    }
+
+    public void statisticsLoop() throws SQLException {
+        while (true) {
+            printStatisticsMenu();
+            String choice = InputUtils.readTrimmed("Please choose your statistics menu item: > ");
+            if (choice == null) {
+                System.out.println("Input closed. Exiting.");
+                return;
+            }
+            switch (choice) {
+                case "1" -> ConsoleActions.showAllStudents();
+                case "2" -> ConsoleActions.showAllCourses();
+                case "3" -> ConsoleActions.showAllStudentsInCourse();
+                case "4", "q", "quit", "exit" -> {
+                    return;
+                }
+                default -> System.out.println("Unknown option. Please try again.");
+            }
+        }
+
     }
 
     /** Prints the top-level menu options. */
@@ -87,6 +108,12 @@ public class ConsoleMenu {
     }
 
     private void printStatisticsMenu(){
+        System.out.println();
+        System.out.println("Statistics Menu");
+        System.out.println("1. Show all students");
+        System.out.println("2. Show all courses");
+        System.out.println("3. Show all students int the course");
+        System.out.println("4. Return to the main menu"); //
         //Statistics menu:
         //1. Show all students
         //2. Show all courses

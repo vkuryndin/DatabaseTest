@@ -2,10 +2,8 @@ package org.example.service;
 
 import org.example.util.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 import org.example.storage.SQLQueries;
 
 public class CoursesService {
@@ -100,6 +98,27 @@ public class CoursesService {
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to add student to course", e);
+        }
+    }
+
+    public static void showAllCourses() {
+        System.out.println(" ");
+        System.out.println("Showing all courses:");
+        try (Connection conn = ConnectionFactory.getConnection("appdb");
+             Statement stmt = conn.createStatement())
+        {
+            try (ResultSet rs = stmt.executeQuery(SQLQueries.SQLQueryShowAllCourses)) {
+                System.out.printf("%-5s %-30s%n", "ID", "Name");
+                System.out.println("---------------------------------------------");
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("course_name");
+
+                    System.out.printf("%-5d %-30s%n", id, name);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get all courses", e);
         }
     }
 

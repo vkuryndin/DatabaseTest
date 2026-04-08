@@ -2,15 +2,13 @@ package org.example.service;
 
 import org.example.util.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 import org.example.storage.SQLQueries;
 
 public final class StudentService {
 
-    //constructor will not be used,
+    //constructor will not be used,// utility class
     private StudentService() {
     }
 
@@ -84,5 +82,28 @@ public final class StudentService {
             throw new RuntimeException("Failed to check student by email", e);
         }
     }
+    public static void showAllStudents() {
+        System.out.println(" ");
+        System.out.println("Showing all students:");
+        try (Connection conn = ConnectionFactory.getConnection("appdb");
+             Statement stmt = conn.createStatement())
+             {
+            try (ResultSet rs = stmt.executeQuery(SQLQueries.SQLQueryShowAllStudents)) {
+                System.out.printf("%-5s %-25s %-30s%n", "ID", "Name", "Email");
+                System.out.println("--------------------------------------------------------------");
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("student_name");
+                    String email = rs.getString("email");
+
+                    //System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
+                    System.out.printf("%-5d %-25s %-30s%n", id, name, email);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get all students", e);
+        }
+    }
+
 
 }

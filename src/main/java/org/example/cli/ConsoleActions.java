@@ -17,6 +17,7 @@ public class ConsoleActions {
 
     public static void addStudent() throws SQLException {
         while (true) {
+            StudentService.showAllStudents();
             System.out.println(" ");
             System.out.println("Add student or press q(Q) to return:");
             String name = InputUtils.readTrimmed("Enter student name: ");
@@ -40,6 +41,7 @@ public class ConsoleActions {
     }
     public static void addCourse() throws SQLException {
         while (true) {
+            CoursesService.showAllCourses();
             System.out.println(" ");
             System.out.println("Add course or press q(Q) to return:");
             String courseName = InputUtils.readTrimmed("Enter course name: ");
@@ -93,7 +95,18 @@ public class ConsoleActions {
     public static void deleteStudent(){
         System.out.println("Delete the student");
     }
-    /*
+
+    public static void showAllStudents(){
+        StudentService.showAllStudents();
+    }
+    public static void showAllCourses(){
+        CoursesService.showAllCourses();
+    }
+
+    public static void showAllStudentsInCourse(){
+        System.out.println("Show all students in the course");
+    }
+        /*
          System.out.println("1. Add student");
         System.out.println("2. Add course");
         System.out.println("3. Add student to the course");

@@ -19,4 +19,14 @@ public class SQLQueries {
         WHERE course_name = ?::citext
         LIMIT 1
     """;
+
+    public static final String SQLQueryShowAllStudents = """
+        SELECT *
+        FROM students
+    """;
+
+    public static final String SQLQueryShowAllCourses = """
+        SELECT *
+        FROM courses
+    """;
 }
