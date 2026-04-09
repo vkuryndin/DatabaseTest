@@ -10,13 +10,13 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        //System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
+        //for (int i = 1; i <= 5; i++) {
             //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
             // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        //    System.out.println("i = " + i);
+        //}
 
         //testConnection();
         //getCourses();
@@ -29,9 +29,9 @@ public class Main {
         Db.checkDBConnection("appdb");
         ConsoleMenu menu = new ConsoleMenu();
         menu.mainLoop();
-
     }
 
+    /*
     //Think about it later
     private static void testConnection(){
         String url = "jdbc:postgresql://192.168.179.129:5432/appdb";
@@ -86,5 +86,5 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    } */
 }

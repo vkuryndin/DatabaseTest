@@ -101,26 +101,64 @@ public class CoursesService {
         }
     }
 
+    public static boolean removeStudentFromTheCourse (Connection connection, int studentId, int courseId) {
+        String sql = """
+                DELETE FROM student_courses
+                WHERE student_id = ?
+                AND course_id = ?;
+        """;
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to add student to course", e);
+        }
+    }
+
     public static void showAllCourses() {
         System.out.println(" ");
         System.out.println("Showing all courses:");
         try (Connection conn = ConnectionFactory.getConnection("appdb");
              Statement stmt = conn.createStatement())
         {
-            try (ResultSet rs = stmt.executeQuery(SQLQueries.SQLQueryShowAllCourses)) {
-                System.out.printf("%-5s %-30s%n", "ID", "Name");
-                System.out.println("---------------------------------------------");
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String name = rs.getString("course_name");
-
-                    System.out.printf("%-5d %-30s%n", id, name);
-                }
-            }
+            prepareInfoForShowAllCourses(stmt);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to get all courses", e);
         }
     }
+
+    public static void showAllCourses(Connection connection) {
+        System.out.println(" ");
+        System.out.println("Showing all courses:");
+        try (Statement stmt = connection.createStatement())
+        {
+            prepareInfoForShowAllCourses(stmt);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get all courses", e);
+        }
+    }
+
+    //private helper methods to remove code duplication
+    private static void prepareInfoForShowAllCourses (Statement stmt) {
+        try (ResultSet rs = stmt.executeQuery(SQLQueries.SQLQueryShowAllCourses)) {
+            System.out.printf("%-5s %-30s%n", "ID", "Name");
+            System.out.println("---------------------------------------------");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("course_name");
+
+                System.out.printf("%-5d %-30s%n", id, name);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
 
