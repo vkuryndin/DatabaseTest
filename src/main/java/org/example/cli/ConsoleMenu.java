@@ -52,7 +52,7 @@ public class ConsoleMenu {
         }
     }
 
-    public void statisticsLoop() throws SQLException {
+    public void statisticsLoop() {
         while (true) {
             printStatisticsMenu();
             String choice = InputUtils.readTrimmed("Please choose your statistics menu item: > ");

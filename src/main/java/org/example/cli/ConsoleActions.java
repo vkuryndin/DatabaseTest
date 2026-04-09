@@ -18,7 +18,7 @@ public class ConsoleActions {
     private ConsoleActions() {
     }
 
-    public static void addStudent() throws SQLException {
+    public static void addStudent() {
         while (true) {
             try (Connection connection = ConnectionFactory.getConnection("appdb")) {
             StudentService.showAllStudents(connection);
@@ -72,7 +72,7 @@ public class ConsoleActions {
             }
         }
     }
-    public static void addStudentToCourse() throws SQLException {
+    public static void addStudentToCourse()  {
         System.out.println("Add student to the course");
         try (Connection connection = ConnectionFactory.getConnection("appdb")) {
             StudentService.showAllStudents(connection);

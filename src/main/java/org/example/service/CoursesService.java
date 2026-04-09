@@ -12,7 +12,7 @@ public class CoursesService {
     private CoursesService() {
     }
 
-    public static boolean courseExistsByName(String email) throws SQLException {
+    public static boolean courseExistsByName(String email) {
           try (Connection conn = ConnectionFactory.getConnection("appdb");
              PreparedStatement ps = conn.prepareStatement(SQLQueries.SQLQueryGetCourseByName)) {
 
